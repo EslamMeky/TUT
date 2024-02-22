@@ -16,4 +16,13 @@ Route::group(['middleware'=>['api','checkLang'],'namespace'=>'App\Http\Controlle
     Route::post('loginUser','AuthController@login');
 
 
+
+    //////////////////////////User /////////////////
+
+    Route::post('updateUser/{id}','UserController@update');
+    Route::get('editUser/{id}','UserController@edit');
+
+
+
+
 });

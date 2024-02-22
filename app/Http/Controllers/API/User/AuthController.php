@@ -20,44 +20,70 @@ class AuthController extends Controller
         return $this->ReturnData('Users',$user,'');
 
     }
-    public function register(Request $request) {
-        try {
-        //rules
-            $rules = [
-            'fname' => 'required|between:2,100',
-            'lname' => 'required|between:2,100',
-            'email' => 'required|email|max:100|unique:users',
-            'password' => 'required|min:6',
-            'age' => 'required|int',
-            'gender' => 'required|between:2,100',
-            'phone' => 'required|between:2,100',
-            ];
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            $code = $this->returnCodeAccordingToInput($validator);
-            return $this->returnValidationError($code, $validator);
-        }
-        //confirm password
-        if ($request->password != $request->com_password) {
-            return $this->ReturnError(400, __('msgs.please confirm password'));
-        }
-        $user = User::create([
-            'fname' => $request->fname,
-                'lname' => $request->lname,
-            'email' => $request->email,
-                'password' => bcrypt($request->password),
-            'age' => $request->age,
-                'phone' => $request->phone,
-            'gender' => $request->gender,
-                'city' => $request->city,
-            'country' => $request->country,
-        ]);
-        return $this->ReturnSuccess(200, __('msgs.user created successfully'));
-    }
-    catch(\Exception $ex)
+    public function register(Request $request)
     {
-        return $this->ReturnError($ex->getCode(),$ex->getMessage());
-    }
+        try {
+            //rules
+            $rules = [
+                'fname' => 'required|between:2,100',
+                'lname' => 'required|between:2,100',
+                'email' => 'required|email|max:100|unique:users',
+                'password' => 'required|min:6',
+                'age' => 'required|int',
+                'gender' => 'required|between:2,100',
+                'phone' => 'required|between:2,100',
+            ];
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                $code = $this->returnCodeAccordingToInput($validator);
+                return $this->returnValidationError($code, $validator);
+            }
+            //confirm password
+            if ($request->password != $request->com_password)
+            {
+                return $this->ReturnError(400, __('msgs.please confirm password'));
+            }
+            if ($request->hasFile('photo'))
+            {
+                $pathFile = uploadImage('user', $request->photo);
+                 User::create([
+                    'fname' => $request->fname,
+                    'lname' => $request->lname,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                    'age' => $request->age,
+                    'phone' => $request->phone,
+                    'gender' => $request->gender,
+                    'city' => $request->city,
+                    'country' => $request->country,
+                    'photo' => $pathFile,
+                ]);
+                return $this->ReturnSuccess(200, __('msgs.user created successfully'));
+            }
+            else
+            {
+                 User::create([
+                    'fname' => $request->fname,
+                    'lname' => $request->lname,
+                    'email' => $request->email,
+                    'password' => bcrypt($request->password),
+                    'age' => $request->age,
+                    'phone' => $request->phone,
+                    'gender' => $request->gender,
+                    'city' => $request->city,
+                    'country' => $request->country,
+                     'photo' => null,
+
+                    ]);
+                return $this->ReturnSuccess(200, __('msgs.user created successfully'));
+
+            }
+
+        }
+        catch (\Exception $ex)
+{
+            return $this->ReturnError($ex->getCode(), $ex->getMessage());
+        }
     }
 
     public function login(Request $request)

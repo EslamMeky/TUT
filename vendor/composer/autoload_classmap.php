@@ -11,6 +11,7 @@ return array(
     'App\\Http\\Controllers\\API\\User\\AuthController' => $baseDir . '/app/Http/Controllers/API/User/AuthController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
+    'App\\Http\\Middleware\\AssignGuard' => $baseDir . '/app/Http/Middleware/AssignGuard.php',
     'App\\Http\\Middleware\\Authenticate' => $baseDir . '/app/Http/Middleware/Authenticate.php',
     'App\\Http\\Middleware\\CheckLang' => $baseDir . '/app/Http/Middleware/CheckLang.php',
     'App\\Http\\Middleware\\EncryptCookies' => $baseDir . '/app/Http/Middleware/EncryptCookies.php',

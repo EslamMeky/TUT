@@ -9,5 +9,7 @@ return [
     'enter'=>'Enter Successfully',
     'something'=>'SomeThing Wrong,Try Again Later',
     'logout'=>'Successfully Logout',
+    'notFound'=>'Not Found This User',
+    'updateUser'=>'User Updated Successfully',
 
     ];

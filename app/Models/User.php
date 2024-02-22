@@ -22,6 +22,7 @@ class User extends Authenticatable implements JWTSubject
        'age',
        'gender',
        'phone',
+       'photo',
        'city',
        'country',
        'created_at',
@@ -30,19 +31,25 @@ class User extends Authenticatable implements JWTSubject
     ];
 
    public function ScopeSelection($q){
-       return $q->select('id', 'fname',
+       return $q->select('id',
+           'fname',
            'lname',
            'email',
            'password',
            'age',
            'gender',
            'phone',
+           'photo',
            'city',
            'country',
            'created_at',
            'updated_at');
    }
     protected $timestamp=true;
+    public function getPhotoAttribute($val)
+    {
+        return ($val!=null)? asset('assets/'.$val):"";
+    }
 
     public function getJWTIdentifier()
     {

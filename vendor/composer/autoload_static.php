@@ -36,6 +36,7 @@ class ComposerStaticInitd9c9a0db7da3c369095fe69f50cc1233
         'c72349b1fe8d0deeedd3a52e8aa814d8' => __DIR__ . '/..' . '/mockery/mockery/library/helpers.php',
         'ce9671a430e4846b44e1c68c7611f9f5' => __DIR__ . '/..' . '/mockery/mockery/library/Mockery.php',
         'ec07570ca5a812141189b1fa81503674' => __DIR__ . '/..' . '/phpunit/phpunit/src/Framework/Assert/Functions.php',
+        'b11c8523bbc20cc08eaeefbcc192603d' => __DIR__ . '/../..' . '/App/Helper/General.php',
     );
 
     public static $prefixLengthsPsr4 = array (
@@ -336,8 +337,8 @@ class ComposerStaticInitd9c9a0db7da3c369095fe69f50cc1233
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-message/src',
-            1 => __DIR__ . '/..' . '/psr/http-factory/src',
+            0 => __DIR__ . '/..' . '/psr/http-factory/src',
+            1 => __DIR__ . '/..' . '/psr/http-message/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -536,6 +537,7 @@ class ComposerStaticInitd9c9a0db7da3c369095fe69f50cc1233
         'App\\Http\\Controllers\\API\\User\\AuthController' => __DIR__ . '/../..' . '/app/Http/Controllers/API/User/AuthController.php',
         'App\\Http\\Controllers\\Controller' => __DIR__ . '/../..' . '/app/Http/Controllers/Controller.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
+        'App\\Http\\Middleware\\AssignGuard' => __DIR__ . '/../..' . '/app/Http/Middleware/AssignGuard.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
         'App\\Http\\Middleware\\CheckLang' => __DIR__ . '/../..' . '/app/Http/Middleware/CheckLang.php',
         'App\\Http\\Middleware\\EncryptCookies' => __DIR__ . '/../..' . '/app/Http/Middleware/EncryptCookies.php',
