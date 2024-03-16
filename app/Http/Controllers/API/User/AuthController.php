@@ -16,8 +16,14 @@ class AuthController extends Controller
 {
     use GeneralTrait;
     public function index(){
-        $user=User::selection()->get();
-        return $this->ReturnData('Users',$user,'');
+        try{
+            $user=User::selection()->paginate(PAGINATE);
+            return $this->ReturnData('Users',$user,'');
+
+        }
+        catch (\Exception $ex){
+            return  $this->ReturnError($ex->getCode(),$ex->getMessage());
+        }
 
     }
     public function register(Request $request)
