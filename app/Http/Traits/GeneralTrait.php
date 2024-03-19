@@ -9,7 +9,7 @@ trait GeneralTrait
             'status'=>false,
             'errNum' => $errNum,
             'msg'=>$msg,
-        ]);
+        ],400);
     }
 
     public function ReturnSuccess($errNum="200",$msg){
@@ -17,7 +17,7 @@ trait GeneralTrait
             'status'=>true,
             'errNum'=>$errNum,
             'msg'=>$msg,
-        ]);
+        ],200);
     }
 
     public function ReturnData($key,$value,$msg){
@@ -28,7 +28,7 @@ trait GeneralTrait
             $key=>$value,
 
 
-        ]);
+        ],200);
     }
 
     public function returnValidationError($code = "E001", $validator)
