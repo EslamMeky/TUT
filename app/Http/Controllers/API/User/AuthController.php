@@ -33,11 +33,12 @@ class AuthController extends Controller
             $rules = [
                 'fname' => 'required|between:2,100',
                 'lname' => 'required|between:2,100',
-                'email' => 'required|email|max:100|unique:users',
+                'email' => 'required|email|max:200|unique:users',
                 'password' => 'required|min:6',
                 'age' => 'required|int',
                 'gender' => 'required|between:2,100',
                 'phone' => 'required|between:2,100',
+                'photo'=>'required|mimes:jpg,jpeg,png'
             ];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
@@ -65,24 +66,6 @@ class AuthController extends Controller
                     'photo' => $pathFile,
                 ]);
                 return $this->ReturnSuccess(200, __('msgs.user created successfully'));
-            }
-            else
-            {
-                 User::create([
-                    'fname' => $request->fname,
-                    'lname' => $request->lname,
-                    'email' => $request->email,
-                    'password' => bcrypt($request->password),
-                    'age' => $request->age,
-                    'phone' => $request->phone,
-                    'gender' => $request->gender,
-                    'city' => $request->city,
-                    'country' => $request->country,
-                     'photo' => null,
-
-                    ]);
-                return $this->ReturnSuccess(200, __('msgs.user created successfully'));
-
             }
 
         }
