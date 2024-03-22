@@ -50,3 +50,13 @@ Route::group(['prefix'=>'admin/city','namespace'=>'App\Http\Controllers\API\Admi
     Route::post('delete/{id}','CityController@delete');
 
 });
+
+Route::group(['prefix' => 'admin/category', 'namespace' => 'App\Http\Controllers\API\Admin', 'middleware' => ['checkLang', 'guest:admin-api']], function () {
+
+    Route::post('add', 'CategoryController@add');
+    Route::get('show', 'CategoryController@show');
+    Route::get('edit/{id}', 'CategoryController@edit');
+    Route::post('update/{id}', 'CategoryController@update');
+    Route::post('delete/{id}', 'CategoryController@delete');
+
+});
