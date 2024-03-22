@@ -11,5 +11,6 @@ return [
     'logout'=>'Successfully Logout',
     'notFound'=>'Not Found This User',
     'updateUser'=>'User Updated Successfully',
+    'delete'=>'Deleted Successfully',
 
     ];

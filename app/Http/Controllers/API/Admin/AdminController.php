@@ -1,43 +1,31 @@
 <?php
 
-namespace App\Http\Controllers\API\User;
+namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GeneralTrait;
-use App\Models\User;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Tymon\JWTAuth\Exceptions\TokenInvalidException;
-use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Str;
 
-
-class AuthController extends Controller
+class AdminController extends Controller
 {
     use GeneralTrait;
-    public function index(){
-        try{
-            $user=User::selection()->paginate(PAGINATE);
-            return $this->ReturnData('Users',$user,'Done');
 
-        }
-        catch (\Exception $ex){
-            return  $this->ReturnError($ex->getCode(),$ex->getMessage());
-        }
-
-    }
     public function register(Request $request)
     {
-        try {
+        try
+        {
             //rules
             $rules = [
                 'fname' => 'required|between:2,100',
                 'lname' => 'required|between:2,100',
-                'email' => 'required|email|max:200|unique:users',
+                'email' => 'required|email|max:200|unique:admins',
                 'password' => 'required|min:6',
-                'age' => 'required|int',
                 'gender' => 'required|between:2,100',
-                'phone' => 'required|between:2,100',
+                'phone' => 'required|between:2,11',
                 'photo'=>'required|mimes:jpg,jpeg,png'
             ];
             $validator = Validator::make($request->all(), $rules);
@@ -52,17 +40,14 @@ class AuthController extends Controller
             }
             if ($request->hasFile('photo'))
             {
-                $pathFile = uploadImage('user', $request->photo);
-                 User::create([
+                $pathFile = uploadImage('admin', $request->photo);
+                Admin::create([
                     'fname' => $request->fname,
                     'lname' => $request->lname,
                     'email' => $request->email,
                     'password' => bcrypt($request->password),
-                    'age' => $request->age,
                     'phone' => $request->phone,
                     'gender' => $request->gender,
-                    'city' => $request->city,
-                    'country' => $request->country,
                     'photo' => $pathFile,
                 ]);
                 return $this->ReturnSuccess(200, __('msgs.user created successfully'));
@@ -91,14 +76,14 @@ class AuthController extends Controller
             }
             ///////  login  ////
             $incremental=$request->only(['email','password']);
-            $token=Auth::guard('user-api')->attempt($incremental);
+            $token=Auth::guard('admin-api')->attempt($incremental);
             if (!$token)
             {
                 return $this->ReturnError('E001',__('msgs.information'));
             }
-            $user=Auth::guard('user-api')->user();
+            $user=Auth::guard('admin-api')->user();
             $user->api_token=$token;
-            return $this->ReturnData('user',$user,__('msgs.enter'));
+            return $this->ReturnData('admin',$user,__('msgs.enter'));
 
         }
         catch (\Exception $ex)
@@ -107,25 +92,84 @@ class AuthController extends Controller
         }
     }
 
-    public function logout(Request $request)
+    public function show(Request $request)
     {
-        try {
-            $token=$request->header('auth_token');
-            if ($token){
-                try {
-                    JWTAuth::setToken($token)->invalidate();
-
-                }catch (TokenInvalidException $ex){
-                    return $this->ReturnError('E000',__('msgs.something'));
-                }
-            return $this->ReturnSuccess('200',__('msgs.logout'));
-            }
-            else{
-                return $this->ReturnError('E000',__('msgs.something'));
-            }
+        try
+        {
+            $admins=Admin::selection()->paginate(PAGINATE);
+            return $this->ReturnData('Admins',$admins,'Done');
         }
         catch (\Exception $ex){
             return $this->ReturnError($ex->getCode(),$ex->getMessage());
         }
     }
+
+    public function edit($id)
+    {
+        $admin=Admin::find($id);
+        if (!$admin){
+            return $this->ReturnError('E000',__('msgs.notFound'));
+
+        }
+        $admin->where('id',$id)->get();
+        return $this->ReturnData('admin',$admin,'success');
+    }
+
+    public function update(Request $request,$id)
+    {
+        try {
+            $admin=Admin::find($id);
+            if (!$admin){
+                return $this->ReturnError('E000',__('msgs.notFound'));
+            }
+            $admin->where('id',$request->id)->update([
+                'fname'=>$request->fname,
+                'lname'=>$request->lname,
+                'email'=>$request->email,
+                'gender'=>$request->gender,
+                'phone'=>$request->phone,
+            ]);
+            if ($request->hasFile('photo')){
+                $pathFile=uploadImage('admin',$request->photo);
+                Admin::where('id',$id)->update([
+                    'photo'=>$pathFile,
+                ]);
+            }
+            return $this->ReturnSuccess('200',__('msgs.updateUser'));
+
+        }
+        catch (\Exception $ex){
+            return $this->ReturnError($ex->getCode(),$ex->getMessage());
+        }
+    }
+
+
+    public function delete(Request $request ,$id){
+        try
+        {
+            $admin=Admin::find($id);
+            if (!$admin){
+                return $this->ReturnError('E000',__('msgs.notFound'));
+            }
+            if ($admin->photo != null){
+                $image=Str::after($admin->photo,'assets/');
+                $image=base_path('public/assets/'.$image);
+                unlink($image);
+                $admin->delete();
+            }
+            else
+                $admin->delete();
+            return $this->ReturnSuccess('S00',__('msgs.delete'));
+
+        }
+        catch(\Exception $ex )
+        {
+            return $this->ReturnError($ex->getCode(),$ex->getMessage());
+        }
+    }
+
+
+
+
+
 }
