@@ -8,6 +8,8 @@ $baseDir = dirname($vendorDir);
 return array(
     'App\\Console\\Kernel' => $baseDir . '/app/Console/Kernel.php',
     'App\\Exceptions\\Handler' => $baseDir . '/app/Exceptions/Handler.php',
+    'App\\Http\\Controllers\\API\\Admin\\AdminController' => $baseDir . '/app/Http/Controllers/API/Admin/AdminController.php',
+    'App\\Http\\Controllers\\API\\Admin\\CityController' => $baseDir . '/app/Http/Controllers/API/Admin/CityController.php',
     'App\\Http\\Controllers\\API\\User\\AuthController' => $baseDir . '/app/Http/Controllers/API/User/AuthController.php',
     'App\\Http\\Controllers\\Controller' => $baseDir . '/app/Http/Controllers/Controller.php',
     'App\\Http\\Kernel' => $baseDir . '/app/Http/Kernel.php',
@@ -22,6 +24,8 @@ return array(
     'App\\Http\\Middleware\\TrustProxies' => $baseDir . '/app/Http/Middleware/TrustProxies.php',
     'App\\Http\\Middleware\\VerifyCsrfToken' => $baseDir . '/app/Http/Middleware/VerifyCsrfToken.php',
     'App\\Http\\Traits\\GeneralTrait' => $baseDir . '/app/Http/Traits/GeneralTrait.php',
+    'App\\Models\\Admin' => $baseDir . '/app/Models/Admin.php',
+    'App\\Models\\City' => $baseDir . '/app/Models/City.php',
     'App\\Models\\User' => $baseDir . '/app/Models/User.php',
     'App\\Providers\\AppServiceProvider' => $baseDir . '/app/Providers/AppServiceProvider.php',
     'App\\Providers\\AuthServiceProvider' => $baseDir . '/app/Providers/AuthServiceProvider.php',

@@ -27,6 +27,7 @@ Route::group(['middleware'=>['api','checkLang'],'namespace'=>'App\Http\Controlle
 
 });
 
+////////// admin ////////
 Route::group(['prefix'=>'admin','namespace'=>'App\Http\Controllers\API\Admin','middleware'=>['checkLang','guest:admin-api']],function (){
 
     Route::post('register','AdminController@register');
@@ -35,5 +36,17 @@ Route::group(['prefix'=>'admin','namespace'=>'App\Http\Controllers\API\Admin','m
     Route::get('edit/{id}','AdminController@edit');
     Route::post('update/{id}','AdminController@update');
     Route::post('delete/{id}','AdminController@delete');
+
+});
+
+//////// Cites  ////////////////
+
+Route::group(['prefix'=>'admin/city','namespace'=>'App\Http\Controllers\API\Admin','middleware'=>['checkLang','guest:admin-api']],function (){
+
+    Route::post('add','CityController@add');
+    Route::get('show','CityController@show');
+    Route::get('edit/{id}','CityController@edit');
+    Route::post('update/{id}','CityController@update');
+    Route::post('delete/{id}','CityController@delete');
 
 });

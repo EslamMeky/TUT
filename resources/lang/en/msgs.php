@@ -11,6 +11,11 @@ return [
     'logout'=>'Successfully Logout',
     'notFound'=>'Not Found This User',
     'updateUser'=>'User Updated Successfully',
+    'not'=>'not Found This',
     'delete'=>'Deleted Successfully',
+    'add'=>'Added Successfully',
+    'update'=>'Updated Successfully',
+
+
 
     ];

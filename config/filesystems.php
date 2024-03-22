@@ -54,6 +54,12 @@ return [
             'url' => env('APP_URL').'/public',
             'visibility' => 'public',
         ],
+        'city' => [
+            'driver' => 'local',
+            'root' => base_path('/public/assets/images/city/'),
+            'url' => env('APP_URL').'/public',
+            'visibility' => 'public',
+        ],
 
         's3' => [
             'driver' => 's3',
