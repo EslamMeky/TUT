@@ -4,14 +4,15 @@ namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GeneralTrait;
-use App\Models\City;
+use App\Models\Place;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class CityController extends Controller
+class PlacesController extends Controller
 {
     use GeneralTrait;
+
     public function add(Request $request)
     {
         try
@@ -20,7 +21,12 @@ class CityController extends Controller
             $rules = [
                 'name' => 'required|between:2,100',
                 'desc' => 'required',
-                'photo'=>'required|mimes:jpg,jpeg,png'
+                'photo'=>'required|mimes:jpg,jpeg,png',
+                'city_id'=>'required',
+                'category_name'=>'required',
+                'longitude'=>'required',
+                'latitude'=>'required',
+
             ];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
@@ -29,12 +35,16 @@ class CityController extends Controller
             }
 
             /////  add  ///
-            $pathFile = uploadImage('city', $request->photo);
+            $pathFile = uploadImage('place', $request->photo);
 
-            City::create([
+            Place::create([
                 'name'=>$request->name,
                 'desc'=>$request->desc,
                 'photo'=>$pathFile,
+                'city_id'=>$request->city_id,
+                'category_name'=>$request->category_name,
+                'longitude'=>$request->longitude,
+                'latitude'=>$request->latitude,
             ]);
             return $this->ReturnSuccess('S000', __('msgs.add'));
         }
@@ -45,13 +55,12 @@ class CityController extends Controller
 
     }
 
-
     public function show()
     {
         try
         {
-            $cities=City::selection()->paginate(PAGINATE);
-            return $this->ReturnData('Cities',$cities,'Done');
+            $place=Place::with(['cities'])->selection()->paginate(PAGINATE);
+            return $this->ReturnData('Places',$place,'Done');
         }
         catch (\Exception $ex){
             return $this->ReturnError($ex->getCode(),$ex->getMessage());
@@ -60,13 +69,13 @@ class CityController extends Controller
 
     public function edit($id)
     {
-        $city=City::find($id);
-        if (!$city){
+        $place=Place::find($id);
+        if (!$place){
             return $this->ReturnError('E000',__('msgs.not'));
 
         }
-        $city->where('id',$id)->get();
-        return $this->ReturnData('city',$city,'success');
+        $place->where('id',$id)->get();
+        return $this->ReturnData('place',$place,'success');
 
     }
 
@@ -74,17 +83,21 @@ class CityController extends Controller
     public function update(Request $request,$id)
     {
         try {
-            $city=City::find($id);
-            if (!$city){
+            $place=Place::find($id);
+            if (!$place){
                 return $this->ReturnError('E000',__('msgs.not'));
             }
-            $city->where('id',$request->id)->update([
+            $place->where('id',$request->id)->update([
                 'name'=>$request->name,
                 'desc'=>$request->desc,
+                'city_id'=>$request->city_id,
+                'category_name'=>$request->category_name,
+                'longitude'=>$request->longitude,
+                'latitude'=>$request->latitude,
             ]);
             if ($request->hasFile('photo')){
-                $pathFile=uploadImage('city',$request->photo);
-                City::where('id',$id)->update([
+                $pathFile=uploadImage('place',$request->photo);
+                Place::where('id',$id)->update([
                     'photo'=>$pathFile,
                 ]);
             }
@@ -101,18 +114,18 @@ class CityController extends Controller
 
         try
         {
-            $city=City::find($id);
-            if (!$city){
+            $place=Place::find($id);
+            if (!$place){
                 return $this->ReturnError('E000',__('msgs.not'));
             }
-            if ($city->photo != null){
-                $image=Str::after($city->photo,'assets/');
+            if ($place->photo != null){
+                $image=Str::after($place->photo,'assets/');
                 $image=base_path('public/assets/'.$image);
                 unlink($image);
-                $city->delete();
+                $place->delete();
             }
             else
-                $city->delete();
+                $place->delete();
             return $this->ReturnSuccess('S00',__('msgs.delete'));
 
         }
@@ -121,6 +134,9 @@ class CityController extends Controller
             return $this->ReturnError($ex->getCode(),$ex->getMessage());
         }
     }
+
+
+
 
 
 }
