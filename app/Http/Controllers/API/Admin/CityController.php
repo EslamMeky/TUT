@@ -50,7 +50,7 @@ class CityController extends Controller
     {
         try
         {
-            $cities=City::selection()->paginate(PAGINATE);
+            $cities=City::selection()->latest()->paginate(PAGINATE);
             return $this->ReturnData('Cities',$cities,'Done');
         }
         catch (\Exception $ex){

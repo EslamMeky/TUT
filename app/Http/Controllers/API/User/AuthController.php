@@ -17,7 +17,7 @@ class AuthController extends Controller
     use GeneralTrait;
     public function index(){
         try{
-            $user=User::selection()->paginate(PAGINATE);
+            $user=User::selection()->latest() ->paginate(PAGINATE);
             return $this->ReturnData('Users',$user,'Done');
 
         }

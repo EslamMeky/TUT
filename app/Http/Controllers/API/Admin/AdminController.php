@@ -96,7 +96,7 @@ class AdminController extends Controller
     {
         try
         {
-            $admins=Admin::selection()->paginate(PAGINATE);
+            $admins=Admin::selection()->latest()->paginate(PAGINATE);
             return $this->ReturnData('Admins',$admins,'Done');
         }
         catch (\Exception $ex){

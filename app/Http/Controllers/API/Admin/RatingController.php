@@ -56,7 +56,7 @@ class RatingController extends Controller
     {
         try
         {
-            $rating=Rating::with(['users','places'])->selection()->paginate(PAGINATE);
+            $rating=Rating::with(['users','places'])->selection()->latest()->paginate(PAGINATE);
             return $this->ReturnData('Rating',$rating,'Done');
         }
         catch (\Exception $ex){

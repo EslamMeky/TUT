@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-const PAGINATE= 10;
+const PAGINATE= 4;
 
 Route::group(['middleware'=>['auth.guard:api','checkLang'],'namespace'=>'App\Http\Controllers\API\User'],function (){
     Route::get('logoutUser','AuthController@logout');
@@ -21,9 +21,6 @@ Route::group(['middleware'=>['api','checkLang'],'namespace'=>'App\Http\Controlle
     Route::post('updateUser/{id}','UserController@update');
     Route::get('editUser/{id}','UserController@edit');
     Route::post('deleteUser/{id}','UserController@delete');
-
-
-
 
 });
 

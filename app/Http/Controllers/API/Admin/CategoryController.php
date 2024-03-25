@@ -37,7 +37,7 @@ class CategoryController extends Controller
     public function show()
     {
         try {
-            $categories = Category::selection()->paginate(PAGINATE);
+            $categories = Category::selection()->latest()->paginate(PAGINATE);
             return $this->ReturnData('Categories', $categories, 'Done');
         } catch (\Exception $ex) {
             return $this->ReturnError($ex->getCode(), $ex->getMessage());
