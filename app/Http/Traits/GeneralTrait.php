@@ -9,7 +9,7 @@ trait GeneralTrait
             'status'=>false,
             'errNum' => $errNum,
             'msg'=>$msg,
-        ],400);
+        ],404);
     }
 
     public function ReturnSuccess($errNum="200",$msg){

@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-const PAGINATE= 4;
+const PAGINATE= 5;
 
 Route::group(['middleware'=>['auth.guard:api','checkLang'],'namespace'=>'App\Http\Controllers\API\User'],function (){
     Route::get('logoutUser','AuthController@logout');
@@ -84,3 +84,13 @@ Route::group(['prefix'=>'admin/rating','namespace'=>'App\Http\Controllers\API\Ad
     Route::get('getAverageRating/{place_id}','RatingController@getAverageRatingOfPlace');
 
 });
+
+////////////     Searching     //////////
+ Route::group(['prefix'=>'searching','namespace'=>'App\Http\Controllers\API\Searching'],function (){
+     Route::post('searchAdmin','SearchController@admin');
+     Route::post('searchUser','SearchController@user');
+     Route::post('searchCity','SearchController@city');
+     Route::post('searchCategory','SearchController@category');
+     Route::post('searchPlaces','SearchController@places');
+     Route::post('searchRating','SearchController@rate');
+ });
