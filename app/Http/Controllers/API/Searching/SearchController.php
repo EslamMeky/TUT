@@ -71,7 +71,8 @@ class SearchController extends Controller
         ->orWhere('lname','LIKE',"%$search%")->get();
         if ($admins -> isEmpty())
         {
-            return $this->ReturnError('E00','No Admins Found  Matching  the search');
+//            return $this->ReturnError('E00','No Admins Found  Matching  the search');
+            return $this->ReturnData('Admins',$admins,'Not Found');
 
         }
         return$this->ReturnData('Admins',$admins,'done search');
@@ -87,7 +88,8 @@ class SearchController extends Controller
             ->orWhere('lname','LIKE',"%$search%")->get();
         if ($users -> isEmpty())
         {
-            return $this->ReturnError('E00','No Users Found  Matching  the search');
+//            return $this->ReturnError('E00','No Users Found  Matching  the search');
+            return $this->ReturnData('users',$users,'Not Found');
         }
         return $this->ReturnData('users',$users,'Done search');
     }
@@ -98,9 +100,11 @@ class SearchController extends Controller
 
         $city=City::where('name','LIKE',"%$search%")->get();
         if ($city -> isEmpty()){
-            return $this->ReturnError('E00','No Cities Found  Matching  the search');
+//            return $this->ReturnError('E00','No Cities Found  Matching  the search');
+            return $this->ReturnData('city',$city,'Not Found');
+
         }
-        return $this->ReturnData('users',$city,'Done search');
+        return $this->ReturnData('city',$city,'Done search');
 
     }
 
@@ -110,7 +114,9 @@ class SearchController extends Controller
 
         $category=Category::where('name','LIKE',"%$search%")->get();
         if ($category -> isEmpty()){
-            return $this->ReturnError('E00','No Categories Found  Matching  the search');
+//            return $this->ReturnError('E00','No Categories Found  Matching  the search');
+            return $this->ReturnData('category',$category,'Not Found');
+
         }
         return $this->ReturnData('categories',$category,'Done search');
 
@@ -122,7 +128,9 @@ class SearchController extends Controller
 
         $places=Place::where('name','LIKE',"%$search%")->get();
         if ($places -> isEmpty()){
-            return $this->ReturnError('E00','No Places Found  Matching  the search');
+//            return $this->ReturnError('E00','No Places Found  Matching  the search');
+            return $this->ReturnData('places',$places,'Not Found');
+
         }
         return $this->ReturnData('places',$places,'Done search');
 
@@ -137,7 +145,9 @@ class SearchController extends Controller
             ->orWhere('lname','LIKE' ,"%$search%");
         })->get();
         if ($rates -> isEmpty()){
-            return $this->ReturnError('E00','No Rates Found  Matching  the search');
+//            return $this->ReturnError('E00','No Rates Found  Matching  the search');
+            return $this->ReturnData('rates',$rates,'Not Found');
+
         }
         return $this->ReturnData('rates',$rates,'Done search');
 
