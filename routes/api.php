@@ -70,12 +70,14 @@ Route::group(['prefix'=>'admin/place','namespace'=>'App\Http\Controllers\API\Adm
     Route::post('update/{id}','PlacesController@update');
     Route::post('delete/{id}','PlacesController@delete');
 
+
+
 });
 
 
 ///////////   Rating  ////////////
 
-Route::group(['prefix'=>'admin/rating','namespace'=>'App\Http\Controllers\API\Admin','middleware'=>['checkLang','guest:admin-api']],function (){
+Route::group(['prefix'=>'rating','namespace'=>'App\Http\Controllers\API\Admin','middleware'=>['checkLang']],function (){
 
     Route::post('add','RatingController@add');
     Route::get('show','RatingController@show');
@@ -94,3 +96,12 @@ Route::group(['prefix'=>'admin/rating','namespace'=>'App\Http\Controllers\API\Ad
      Route::post('searchPlaces','SearchController@places');
      Route::post('searchRating','SearchController@rate');
  });
+
+Route::group(['prefix'=>'home','namespace'=>'App\Http\Controllers\API\Home'],function (){
+    Route::get('index','HomeController@index');
+    Route::post('city/{id}','HomeController@city');
+//    Route::post('searchCity','HomeController@city');
+//    Route::post('searchCategory','HomeController@category');
+//    Route::post('searchPlaces','HomeController@places');
+//    Route::post('searchRating','HomeController@rate');
+});

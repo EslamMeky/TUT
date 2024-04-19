@@ -120,7 +120,8 @@ class RatingController extends Controller
             if ($ratingCount>0){
                 $avgRating=round( $ratingSum / $ratingCount ,2);
 
-            }else{
+            }
+            else{
                 $avgRating=0;
             }
 
