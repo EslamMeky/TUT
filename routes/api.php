@@ -21,6 +21,8 @@ Route::group(['middleware'=>['api','checkLang'],'namespace'=>'App\Http\Controlle
     Route::post('updateUser/{id}','UserController@update');
     Route::get('editUser/{id}','UserController@edit');
     Route::post('deleteUser/{id}','UserController@delete');
+    Route::get('detailsUser','UserController@detailsUser');
+
 
 });
 
@@ -97,11 +99,18 @@ Route::group(['prefix'=>'rating','namespace'=>'App\Http\Controllers\API\Admin','
      Route::post('searchRating','SearchController@rate');
  });
 
+ ///    home    /////
 Route::group(['prefix'=>'home','namespace'=>'App\Http\Controllers\API\Home'],function (){
     Route::get('index','HomeController@index');
-    Route::post('city/{id}','HomeController@city');
-//    Route::post('searchCity','HomeController@city');
-//    Route::post('searchCategory','HomeController@category');
-//    Route::post('searchPlaces','HomeController@places');
-//    Route::post('searchRating','HomeController@rate');
-});
+    Route::get('city/{id}','HomeController@city');
+    Route::get('place/{id}','HomeController@place');
+
+    ////     Favorites   ///////////
+    Route::group(['prefix'=>'favorites','namespace'=>'Favorites'],function (){
+        Route::post('addPlace','FavoritePlaceController@addPlace');
+        Route::get('show','FavoritePlaceController@show');
+        Route::post('getFavoritePlaces','FavoritePlaceController@getFavoritePlaces');
+        Route::post('deleteFavorite','FavoritePlaceController@deleteFavorite');
+
+    });
+   });

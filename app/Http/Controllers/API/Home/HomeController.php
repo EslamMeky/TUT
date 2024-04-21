@@ -35,14 +35,27 @@ class HomeController extends Controller
     }
 
 
-    public function city(Request $request,$id)
+    public function city(Request $request)
     {
         try
         {
-            $city =Place::with('cities')->where('city_id',$id)->orderBy('id','desc')->paginate(PAGINATE);
+            $city =Place::with('cities')->where('city_id',$request->id)->orderBy('id','desc')->paginate(PAGINATE);
             return $this->ReturnData('City',$city,'done');
         }
         catch (\Exception $ex){
+            return $this->ReturnError($ex->getCode(),$ex->getMessage());
+        }
+    }
+
+    public function place(Request $request)
+    {
+        try
+        {
+            $place=Place::with('cities')->where('id',$request->id)->get();
+            return $this->ReturnData('Place',$place,'done');
+        }
+        catch (\Exception $ex)
+        {
             return $this->ReturnError($ex->getCode(),$ex->getMessage());
         }
     }

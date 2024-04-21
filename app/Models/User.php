@@ -51,6 +51,11 @@ class User extends Authenticatable implements JWTSubject
         return ($val!=null)? asset('assets/'.$val):"";
     }
 
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class,'user_id','id');
+    }
+
     public function getJWTIdentifier()
     {
         return $this->getKey();

@@ -49,4 +49,9 @@ class Place extends Model
         return $this->belongsTo(City::class,'city_id','id');
     }
 
+    public function favorites()
+    {
+        return $this->hasMany(Favorite::class,'place_id','id');
+    }
+
 }

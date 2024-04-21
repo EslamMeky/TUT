@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GeneralTrait;
+use App\Models\Favorite;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -72,6 +73,66 @@ class UserController extends Controller
 
        }
        catch(\Exception $ex )
+       {
+           return $this->ReturnError($ex->getCode(),$ex->getMessage());
+       }
+   }
+
+
+   public function detailsUser (Request $request)
+   {
+       try
+       {
+
+           ////////////////////  GET  Each one alone  HOTEL RESTAURANT  PLACETOGO  /////////
+           $user_id = $request->user_id;
+
+           $user = User::find($user_id);
+           if (!$user) {
+               return $this->ReturnError('E00', 'User not found');
+           }
+
+           $restaurants = User::with(['favorites.places' => function($query) {
+               $query->with('cities')->where('category_name', 'Restaurant');
+           }])
+               ->where('id', $user_id)
+               ->orderBy('id', 'desc')
+               ->paginate(PAGINATE);
+
+           $hotel = User::with(['favorites.places' => function($query) {
+               $query->with('cities')->where('category_name', 'Hotel');
+           }])
+               ->where('id', $user_id)
+               ->orderBy('id', 'desc')
+               ->paginate(PAGINATE);
+
+           $placeToGo = User::with(['favorites.places' => function($query) {
+               $query->with('cities')->whereNotIn('category_name', ['Hotel', 'Restaurant']);
+           }])
+               ->where('id', $user_id)
+               ->orderBy('id', 'desc')
+               ->paginate(PAGINATE);
+
+           $data = [
+               'User hotels' => $hotel,
+               'User restaurants' => $restaurants,
+               'User placeToGo' => $placeToGo,
+           ];
+
+           return $this->ReturnData('MultipleData', $data, 'done');
+
+///////     GET ALL DATA  HOTEL RETURANTE PLACETOGO /////
+
+
+
+//            $user=User::with('favorites.places.cities')->find($request->user_id);
+//            if (!$user){
+//                return $this->ReturnError('E00','Not Found This User');
+//            }
+//            return $this->ReturnData('user',$user,'done');
+
+       }
+       catch (\Exception $ex)
        {
            return $this->ReturnError($ex->getCode(),$ex->getMessage());
        }
