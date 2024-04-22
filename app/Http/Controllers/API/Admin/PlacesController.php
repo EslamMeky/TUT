@@ -59,7 +59,7 @@ class PlacesController extends Controller
     {
         try
         {
-            $place=Place::with(['cities'])->selection()->orderBy('id','desc')->paginate(PAGINATE);
+            $place=Place::with(['cities'])->selection()->orderBy('id','asc')->paginate(PAGINATE);
             return $this->ReturnData('Places',$place,'Done');
         }
         catch (\Exception $ex){
