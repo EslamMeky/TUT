@@ -39,7 +39,7 @@ class HomeController extends Controller
     {
         try
         {
-            $city =Place::with('cities')->where('city_id',$request->id)->orderBy('id','desc')->paginate(PAGINATE);
+            $city =Place::with('cities')->where('city_id',$request->id)->orderBy('id','desc')->get();
             return $this->ReturnData('City',$city,'done');
         }
         catch (\Exception $ex){
@@ -51,8 +51,32 @@ class HomeController extends Controller
     {
         try
         {
-            $place=Place::with('cities')->where('id',$request->id)->get();
-            return $this->ReturnData('Place',$place,'done');
+            $place = Place::with('cities')
+                ->where('id', $request->id)
+                ->first();
+
+            if ($place) {
+                $categoryName = $place->category_name;
+
+                $similarPlaces = Place::with('cities')
+                    ->where('category_name', $categoryName)
+                    ->where('id', '!=', $request->id) // لا يجب أن تكون نفس المكان
+                    ->inRandomOrder()
+                    ->take(10) // احصل على 10 أماكن فقط
+                    ->get();
+
+                $data=[
+                  'Place'=>$place,
+                  'Also Like'=>$similarPlaces
+                ];
+
+                return $this->ReturnData('Data', $data, 'done');
+            } else {
+                return $this->ReturnError('E00', 'Place not found');
+            }
+
+//            $place=Place::with('cities')->where('id',$request->id)->get();
+//            return $this->ReturnData('Place',$place,'done');
         }
         catch (\Exception $ex)
         {
@@ -65,7 +89,7 @@ class HomeController extends Controller
     {
         try
         {
-            $Restaurant=Place::with('cities')->where('category_name','Restaurant')->orderBy('id','Asc')->get();
+            $Restaurant=Place::with('cities')->where('category_name','Restaurant')->orderBy('id','Asc')->Paginate(PAGINATE);
             return $this->ReturnData('Restaurant',$Restaurant,'done');
         }
         catch (\Exception $ex)
@@ -77,7 +101,7 @@ class HomeController extends Controller
     {
         try
         {
-            $Hotel=Place::with('cities')->where('category_name','Hotel')->orderBy('id','Asc')->get();
+            $Hotel=Place::with('cities')->where('category_name','Hotel')->orderBy('id','Asc')->Paginate(PAGINATE);
             return $this->ReturnData('Hotel',$Hotel,'done');
         }
         catch (\Exception $ex)
@@ -91,7 +115,7 @@ class HomeController extends Controller
         {
             $exceptionCategory=['Hotel','Restaurant'];
 
-            $placeToGo=Place::with('cities')->whereNotIn('category_name',$exceptionCategory)->orderBy('id','Asc')->get();
+            $placeToGo=Place::with('cities')->whereNotIn('category_name',$exceptionCategory)->orderBy('id','Asc')->Paginate(PAGINATE);
             return $this->ReturnData('PlaceToGo',$placeToGo,'done');
         }
         catch (\Exception $ex)

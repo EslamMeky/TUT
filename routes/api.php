@@ -3,7 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-const PAGINATE= 5;
+const PAGINATE= 10;
 
 Route::group(['middleware'=>['auth.guard:api','checkLang'],'namespace'=>'App\Http\Controllers\API\User'],function (){
     Route::get('logoutUser','AuthController@logout');
