@@ -60,4 +60,44 @@ class HomeController extends Controller
         }
     }
 
+
+    public function SeeMoreRestaurant()
+    {
+        try
+        {
+            $Restaurant=Place::with('cities')->where('category_name','Restaurant')->orderBy('id','Asc')->get();
+            return $this->ReturnData('Restaurant',$Restaurant,'done');
+        }
+        catch (\Exception $ex)
+        {
+            return $this->ReturnError($ex->getCode(),$ex->getMessage());
+        }
+    }
+    public function SeeMoreHotel()
+    {
+        try
+        {
+            $Hotel=Place::with('cities')->where('category_name','Hotel')->orderBy('id','Asc')->get();
+            return $this->ReturnData('Hotel',$Hotel,'done');
+        }
+        catch (\Exception $ex)
+        {
+            return $this->ReturnError($ex->getCode(),$ex->getMessage());
+        }
+    }
+    public function SeeMorePlaceToGo()
+    {
+        try
+        {
+            $exceptionCategory=['Hotel','Restaurant'];
+
+            $placeToGo=Place::with('cities')->whereNotIn('category_name',$exceptionCategory)->orderBy('id','Asc')->get();
+            return $this->ReturnData('PlaceToGo',$placeToGo,'done');
+        }
+        catch (\Exception $ex)
+        {
+            return $this->ReturnError($ex->getCode(),$ex->getMessage());
+        }
+    }
+
 }

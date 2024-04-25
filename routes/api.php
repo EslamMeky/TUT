@@ -104,6 +104,12 @@ Route::group(['prefix'=>'home','namespace'=>'App\Http\Controllers\API\Home'],fun
     Route::get('index','HomeController@index');
     Route::get('city/{id}','HomeController@city');
     Route::get('place/{id}','HomeController@place');
+    Route::get('SeeMoreRestaurant','HomeController@SeeMoreRestaurant');
+    Route::get('SeeMoreHotel','HomeController@SeeMoreHotel');
+    Route::get('SeeMorePlaceToGo','HomeController@SeeMorePlaceToGo');
+
+
+
 
     ////     Favorites   ///////////
     Route::group(['prefix'=>'favorites','namespace'=>'Favorites'],function (){

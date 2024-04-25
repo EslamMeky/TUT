@@ -30,7 +30,6 @@ class RatingController extends Controller
                 $code = $this->returnCodeAccordingToInput($validator);
                 return $this->returnValidationError($code, $validator);
             }
-
             /////  add  ///
             if (!$request->has('status'))
                 $request->request->add(['status' => 1]);
@@ -42,6 +41,7 @@ class RatingController extends Controller
                 'place_id'=>$request->place_id,
                 'rating'=>$request->rating,
                 'review'=>$request->review,
+                'status'=>$request->status,
             ]);
             return $this->ReturnSuccess('S000', __('msgs.add'));
         }
