@@ -109,8 +109,6 @@ Route::group(['prefix'=>'home','namespace'=>'App\Http\Controllers\API\Home'],fun
     Route::get('SeeMorePlaceToGo','HomeController@SeeMorePlaceToGo');
 
 
-
-
     ////     Favorites   ///////////
     Route::group(['prefix'=>'favorites','namespace'=>'Favorites'],function (){
         Route::post('addPlace','FavoritePlaceController@addPlace');
@@ -119,4 +117,12 @@ Route::group(['prefix'=>'home','namespace'=>'App\Http\Controllers\API\Home'],fun
         Route::post('deleteFavorite','FavoritePlaceController@deleteFavorite');
 
     });
+
+////////////////////  Trip Plane  ////////////////////
+    Route::group(['prefix'=>'trip','namespace'=>'AI'],function (){
+        Route::post('generate','TripPlanController@generate');
+        Route::post('store', 'TripPlanController@store');
+        Route::get('showTrip/{tripId}', 'TripPlanController@showTrip');
+        });
+
    });

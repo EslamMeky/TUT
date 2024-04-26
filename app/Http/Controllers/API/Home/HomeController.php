@@ -67,7 +67,7 @@ class HomeController extends Controller
 
                 $data=[
                   'Place'=>$place,
-                  'Also Like'=>$similarPlaces
+                  'AlsoLike'=>$similarPlaces
                 ];
 
                 return $this->ReturnData('Data', $data, 'done');
