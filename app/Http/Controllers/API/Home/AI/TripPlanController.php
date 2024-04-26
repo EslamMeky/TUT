@@ -95,12 +95,13 @@ class TripPlanController extends Controller
         try {
             $trip = TripPlace::with(['trip.users', 'place'])->where('trip_id',$tripId)->get();
 
-            return response()->json([
-                'status' => true,
-                'errNum' => 200,
-                'msg' => 'Trip details fetched successfully.',
-                'tripPlaces' => $trip,
-            ]);
+            return $this->ReturnData('TripPlaces',$trip,'Trip details fetched successfully.');
+//            return response()->json([
+//                'status' => true,
+//                'errNum' => 200,
+//                'msg' => 'Trip details fetched successfully.',
+//                'tripPlaces' => $trip,
+//            ]);
         }
         catch (\Exception $ex)
         {
