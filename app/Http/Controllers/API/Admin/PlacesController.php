@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Traits\GeneralTrait;
 use App\Models\Place;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
@@ -26,6 +27,7 @@ class PlacesController extends Controller
                 'category_name'=>'required',
                 'longitude'=>'required',
                 'latitude'=>'required',
+//                'rating'=>'required'
 
             ];
             $validator = Validator::make($request->all(), $rules);
@@ -45,6 +47,8 @@ class PlacesController extends Controller
                 'category_name'=>$request->category_name,
                 'longitude'=>$request->longitude,
                 'latitude'=>$request->latitude,
+//                'rating'=>$request->rating,
+
             ]);
             return $this->ReturnSuccess('S000', __('msgs.add'));
         }
@@ -94,6 +98,7 @@ class PlacesController extends Controller
                 'category_name'=>$request->category_name,
                 'longitude'=>$request->longitude,
                 'latitude'=>$request->latitude,
+//                'rating'=>$request->rating,
             ]);
             if ($request->hasFile('photo')){
                 $pathFile=uploadImage('place',$request->photo);
@@ -136,6 +141,15 @@ class PlacesController extends Controller
     }
 
 
+    public function removeDataInPlaces()
+    {
+        //DB::table('places')->truncate();
+        DB::table('places')->delete();
+        DB::statement('ALTER TABLE places AUTO_INCREMENT = 1;');
+
+
+        return $this->ReturnSuccess('200','تم إفراغ جدول الاماكن بنجاح!') ;
+    }
 
 
 

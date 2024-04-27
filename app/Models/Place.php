@@ -19,6 +19,7 @@ class Place extends Model
         'category_name',
         'longitude',
         'latitude',
+        'rating',
         'created_at',
         'updated_at',
 
@@ -33,6 +34,7 @@ class Place extends Model
             'category_name',
             'longitude',
             'latitude',
+            'rating',
             'created_at',
             'updated_at',
 

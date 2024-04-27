@@ -126,3 +126,6 @@ Route::group(['prefix'=>'home','namespace'=>'App\Http\Controllers\API\Home'],fun
         });
 
    });
+
+
+Route::get('removeDataInPlaces','App\Http\Controllers\API\Admin\PlacesController@removeDataInPlaces');
