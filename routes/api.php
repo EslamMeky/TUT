@@ -97,6 +97,7 @@ Route::group(['prefix'=>'rating','namespace'=>'App\Http\Controllers\API\Admin','
      Route::post('searchCategory','SearchController@category');
      Route::post('searchPlaces','SearchController@places');
      Route::post('searchRating','SearchController@rate');
+     Route::get('recommendPlaces','SearchController@recommendPlaces');
  });
 
  ///    home    /////

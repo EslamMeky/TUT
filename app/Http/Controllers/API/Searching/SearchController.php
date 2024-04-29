@@ -153,4 +153,41 @@ class SearchController extends Controller
 
     }
 
+    ///AI Search With Similarity////
+    public function recommendPlaces(Request $request)
+    {
+        try {
+            $placeName = $request->input('place_name');
+            $client = new \GuzzleHttp\Client();
+            $response = $client->get('http://127.0.0.1:5000/recommend_places', [
+                'query' => [
+                    'place_name' => $placeName,
+                ],
+            ]);
+
+            if ($response->getStatusCode() === 200) {
+                $recommendedPlaces = json_decode($response->getBody()->getContents(), true);
+                $placesData = [];
+
+                if (empty($recommendedPlaces)) {
+                    // Perform regular search query using %LIKE%
+                    $places = Place::with('cities')->where('name', 'LIKE', '%' . $placeName . '%')->get();
+                    foreach ($places as $place) {
+                        $placesData[] = $place;
+                    }
+                } else {
+                    foreach ($recommendedPlaces as $recommendedPlace) {
+                        $place = Place::with('cities')->where('name', $recommendedPlace['Name'])->first();
+                        if ($place) {
+                            $placesData[] = $place;
+                        }
+                    }
+                }
+
+                return $this->ReturnData('Search', $placesData, 'Search generated successfully.');
+            }
+        } catch (\Exception $ex) {
+            return $this->ReturnError($ex->getCode(), $ex->getMessage());
+        }
+    }
 }
