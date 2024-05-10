@@ -130,3 +130,10 @@ Route::group(['prefix'=>'home','namespace'=>'App\Http\Controllers\API\Home'],fun
 
 
 Route::get('removeDataInPlaces','App\Http\Controllers\API\Admin\PlacesController@removeDataInPlaces');
+
+
+///////////////////  Recommendations ( made for you ) ////////////////
+Route::group(['prefix'=>'recommendation','namespace'=>'App\Http\Controllers\API\Home\AI'],function (){
+    Route::post('getRecommendations','RecommendationController@getRecommendations');
+    Route::get('show/{UserId}', 'RecommendationController@show');
+});
