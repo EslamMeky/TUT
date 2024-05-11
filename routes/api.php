@@ -21,6 +21,7 @@ Route::group(['middleware'=>['api','checkLang'],'namespace'=>'App\Http\Controlle
     Route::post('updateUser/{id}','UserController@update');
     Route::get('editUser/{id}','UserController@edit');
     Route::post('deleteUser/{id}','UserController@delete');
+
     Route::get('detailsUser','UserController@detailsUser');
 
 

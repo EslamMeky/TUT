@@ -53,7 +53,7 @@ class AuthController extends Controller
             if ($request->hasFile('photo'))
             {
                 $pathFile = uploadImage('user', $request->photo);
-                 User::create([
+                $user= User::create([
                     'fname' => $request->fname,
                     'lname' => $request->lname,
                     'email' => $request->email,
@@ -65,7 +65,9 @@ class AuthController extends Controller
                     'country' => $request->country,
                     'photo' => $pathFile,
                 ]);
-                return $this->ReturnSuccess(200, __('msgs.user created successfully'));
+//                return $this->ReturnSuccess(200, __('msgs.user created successfully'));
+                return $this->ReturnData('user',$user,__('msgs.enter'));
+
             }
 
         }
