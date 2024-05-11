@@ -49,8 +49,7 @@ class TripPlanController extends Controller
                 'user_id' => 'required',
                 'days' => 'required',
                 'city' => 'required',
-//                'places' => 'required', // Assuming places data is provided as an array
-//                'places.*' => 'required', // Assuming places data is an array of integers (place IDs)
+                'places' => 'required|array', // Ensure places is provided as an array
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -58,24 +57,32 @@ class TripPlanController extends Controller
                 return response()->json(['error' => $validator->errors()->first()], 422);
             }
 
-
             $trip = Trip::create([
                 'user_id' => $request->user_id,
                 'days' => $request->days,
                 'city' => $request->city,
             ]);
 
-            for ($day = 1; $day <= $request->days; $day++) {
-                $placesForDay = $request->input('places.' . $day);
+            foreach ($request->places as $placeName => $placesForDay) {
+                if ($placeName === "Recommended Hotel") {
+                    $day = 0; // Special case for "Recommended Hotel"
+                } else {
+                    $day = intval(preg_replace('/[^0-9]/', '', $placeName)); // Extract day number from placeName
+                    if ($day < 1 || $day > $request->days) {
+                        return response()->json(['error' => 'Invalid day provided.'], 422);
+                    }
+                }
 
                 if (!is_array($placesForDay)) {
-                    return response()->json(['error' => 'Places for day ' . $day . ' must be provided as an array.'], 422);
+                    return response()->json(['error' => 'Places for ' . $placeName . ' must be provided as an array.'], 422);
                 }
+
                 foreach ($placesForDay as $placeId) {
                     // Validate placeId
                     if (!is_numeric($placeId)) {
-                        return response()->json(['error' => 'Invalid place ID provided for day ' . $day], 422);
+                        return response()->json(['error' => 'Invalid place ID provided for ' . $placeName], 422);
                     }
+
                     TripPlace::create([
                         'trip_id' => $trip->id,
                         'day_num' => $day,
@@ -84,12 +91,13 @@ class TripPlanController extends Controller
                 }
             }
 
-            return $this->ReturnSuccess('200','Successfully store trip');
-        } catch (\Exception $ex)
-        {
+            return response()->json(['message' => 'Successfully stored trip'], 200);
+        } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
+
+
     public function showTrip($tripId)
     {
         try {
