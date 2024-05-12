@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api\User;
 use App\Http\Controllers\Controller;
 use App\Http\Traits\GeneralTrait;
 use App\Models\Favorite;
+use App\Models\Trip;
+use App\Models\TripPlace;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -113,10 +115,20 @@ class UserController extends Controller
                ->orderBy('id', 'desc')
                ->paginate(PAGINATE);
 
+           $tripPlace = TripPlace::with(['place.cities', 'trip.users'])
+               ->whereHas('trip', function($query) use ($user_id) {
+                   $query->whereHas('users', function($query) use ($user_id) {
+                       $query->where('id', $user_id);
+                   });
+               })
+               ->orderBy('id', 'desc')
+               ->paginate(PAGINATE);
+
            $data = [
                'User hotels' => $hotel,
                'User restaurants' => $restaurants,
                'User placeToGo' => $placeToGo,
+               'TripPlaneForUser'=>$tripPlace
            ];
 
            return $this->ReturnData('MultipleData', $data, 'done');
